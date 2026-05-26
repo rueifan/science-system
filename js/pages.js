@@ -506,7 +506,6 @@ function renderReviewTextPage() {
       <div class="text-learning-card text-learning-paged">
         <div class="lesson-page-header">
           <div>
-            <h2 class="page-title">文字教學回看</h2>
             <p class="lesson-page-count">
               第 ${state.lessonIndex + 1} / ${textLessons.length} 節
             </p>
@@ -549,17 +548,33 @@ function renderReviewTextPage() {
 
 function renderAnalysisPage() {
   const questions = posttestQuestions;
-  const answers = state.posttestAnswers;
 
-  let correctCount = 0;
+  const pretestCorrectCount = getQuizScore(pretestQuestions, state.pretestAnswers);
+  const posttestCorrectCount = getQuizScore(posttestQuestions, state.posttestAnswers);
+
+  const totalCount = questions.length;
+  const growthCount = posttestCorrectCount - pretestCorrectCount;
+
+  let growthText = "";
+  let growthClass = "";
+
+  if (growthCount > 0) {
+    growthText = `學習後進步了 ${growthCount} 題，請繼續保持！`;
+    growthClass = "growth-up";
+  } else if (growthCount < 0) {
+    growthText = `後測比前測少答對 ${Math.abs(growthCount)} 題，建議你閱讀下方錯題詳解!`;
+    growthClass = "growth-down";
+  } else {
+    growthText = "前後測答對題數相同，建議你透過下方錯題詳解再次複習!";
+    growthClass = "growth-same";
+  }
 
   const wrongQuestions = questions
     .map((question, index) => {
-      const userAnswerIndex = answers[index];
+      const userAnswerIndex = state.posttestAnswers[index];
       const isCorrect = userAnswerIndex === question.answerIndex;
 
       if (isCorrect) {
-        correctCount++;
         return null;
       }
 
@@ -572,12 +587,10 @@ function renderAnalysisPage() {
     })
     .filter(item => item !== null);
 
-  const score = Math.round((correctCount / questions.length) * 100);
-
   const wrongHtml = wrongQuestions.length === 0
     ? `
       <div class="key-box">
-        <h3>答題結果</h3>
+        <h3>錯題詳解</h3>
         <p>恭喜你，本次後測沒有答錯題目！</p>
       </div>
     `
@@ -597,7 +610,7 @@ function renderAnalysisPage() {
             </div>
 
             <div class="answer-row wrong-answer">
-              你的答案：${userAnswerText || "未作答"}
+              你的答案：${userAnswerText}
             </div>
 
             <div class="answer-row correct-answer">
@@ -618,19 +631,28 @@ function renderAnalysisPage() {
         <h2 class="page-title">學習分析報告</h2>
 
         <p class="page-desc">
-          以下為你的後測答題結果與錯題詳解，請先閱讀後再進入交換體驗。
+          以下為你的前後測答題比較與後測錯題詳解，請閱讀後再進入交換體驗。
         </p>
 
-        <div class="stat-grid">
-          <div class="stat-card">
-            <span>後測答對題數</span>
-            <strong>${correctCount} / ${questions.length}</strong>
+        <div class="score-compare-grid">
+          <div class="score-card">
+            <span>前測答對題數</span>
+            <strong>${pretestCorrectCount} / ${totalCount}</strong>
           </div>
 
-          <div class="stat-card">
-            <span>後測分數</span>
-            <strong>${score}</strong>
+          <div class="score-card">
+            <span>後測答對題數</span>
+            <strong>${posttestCorrectCount} / ${totalCount}</strong>
           </div>
+
+          <div class="score-card ${growthClass}">
+            <span>進步幅度</span>
+            <strong>${growthCount >= 0 ? "+" : ""}${growthCount} 題</strong>
+          </div>
+        </div>
+
+        <div class="growth-message ${growthClass}">
+          ${growthText}
         </div>
 
         <div class="analysis-list">

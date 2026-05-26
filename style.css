@@ -1108,7 +1108,7 @@ button, input {
 .lesson-main-title {
   font-size: 24px;
   color: var(--primary-dark);
-  margin: 3px 0 8px;
+  margin: 8px 0 8px;
 }
 
 /* 內文不要離標題太遠 */
@@ -1163,4 +1163,73 @@ button, input {
 .secondary-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.score-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 24px 0 18px;
+}
+
+.score-card {
+  background: #f7fbf6;
+  border-radius: 18px;
+  padding: 22px 16px;
+  text-align: center;
+  border: 1px solid #e3ece3;
+}
+
+.score-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.score-card strong {
+  display: block;
+  color: var(--text);
+  font-size: 32px;
+}
+
+.growth-message {
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin: 18px 0 24px;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.growth-up {
+  background: #eaf8ef;
+  color: var(--primary-dark);
+  border-color: #bde5c9;
+}
+
+.growth-down {
+  background: #fff1f1;
+  color: #b94343;
+  border-color: #f0c3c3;
+}
+
+.growth-same {
+  background: #f3f5ef;
+  color: #6f8172;
+  border-color: #dce5d8;
+}
+
+@media (max-width: 700px) {
+  .score-compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lesson-page-header {
+  margin-bottom: 8px;
+}
+
+.lesson-page-count {
+  margin: 0;
 }
