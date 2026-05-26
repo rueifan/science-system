@@ -16,6 +16,7 @@ const state = {
   currentPage: "login",
   selectedQuizOption: null,
   quizIndex: 0,
+  lessonIndex: 0,
   pretestAnswers: {},
   posttestAnswers: {},
   surveyAnswers: {},
@@ -80,6 +81,15 @@ function go(page) {
     state.selectedQuizOption = null;
   }
 
+  // 進入文字教學相關頁面時，從第 1 節開始
+  if (
+    page === "stage1Learning" ||
+    page === "exchangeLearning" ||
+    page === "reviewText"
+  ) {
+    state.lessonIndex = 0;
+  }
+
   render();
 }
 
@@ -91,4 +101,16 @@ function getQuizScore(questions, answers) {
   return questions.reduce((score, question, index) => {
     return answers[index] === question.answerIndex ? score + 1 : score;
   }, 0);
+}
+
+function getOptionText(option) {
+  if (!option) {
+    return "未作答";
+  }
+
+  if (typeof option === "string") {
+    return option;
+  }
+
+  return option.text || "圖片選項";
 }

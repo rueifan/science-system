@@ -915,3 +915,252 @@ button, input {
 .option .question-image {
   max-height: 150px;
 }
+
+.analysis-card {
+  width: min(860px, 100%);
+}
+
+.analysis-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.wrong-question-card {
+  background: #f8fbf6;
+  border: 1px solid #dfe9df;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.wrong-question-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+
+.wrong-question-content {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.answer-row {
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.wrong-answer {
+  background: #fff1f1;
+  color: #b94343;
+}
+
+.correct-answer {
+  background: #edf8f0;
+  color: var(--primary-dark);
+}
+
+.explanation-box {
+  background: white;
+  border-radius: 14px;
+  padding: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.text-learning-long {
+  width: min(900px, 100%);
+}
+
+.lesson-section {
+  margin-bottom: 34px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid #e4eee4;
+}
+
+.lesson-section:last-of-type {
+  border-bottom: none;
+}
+
+.lesson-section h3 {
+  font-size: 22px;
+  color: var(--primary-dark);
+  margin: 0 0 14px;
+}
+
+.lesson-content {
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 16px;
+  white-space: pre-line;
+}
+
+.lesson-section h3 {
+  font-size: 22px;
+  color: var(--primary-dark);
+  margin: 0 0 14px;
+}
+
+.lesson-section p {
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 16px;
+  white-space: pre-line;
+}
+
+.lesson-image {
+  display: block;
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  margin: 18px auto;
+  border-radius: 16px;
+  border: 1px solid #dfe9df;
+  background: white;
+}
+
+.lesson-main-title {
+  font-size: 24px;
+  color: var(--primary-dark);
+  margin: 0 0 5px;
+}
+
+.lesson-subsection {
+  margin-bottom: 30px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e4eee4;
+}
+
+.lesson-subsection:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.lesson-subsection h3 {
+  font-size: 21px;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+.lesson-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.lesson-page-indicator {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.secondary-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.lesson-main-title {
+  font-size: 24px;
+  color: var(--primary-dark);
+  margin: 0 0 6px;
+}
+
+.single-lesson-section {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.lesson-content {
+  margin-top: 0;
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 16px;
+  white-space: pre-line;
+}
+
+/* 文字教學頁：整體縮小間距 */
+.text-learning-card {
+  padding: 26px 34px;
+}
+
+/* 標題區不要太高 */
+.lesson-page-header {
+  margin-bottom: 5px;
+}
+
+.lesson-page-header .page-title {
+  margin-bottom: 6px;
+}
+
+.lesson-page-count {
+  margin: 0;
+}
+
+/* 單元標題與內容距離縮短 */
+.lesson-main-title {
+  font-size: 24px;
+  color: var(--primary-dark);
+  margin: 3px 0 8px;
+}
+
+/* 內文不要離標題太遠 */
+.single-lesson-section {
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: 18px;
+  padding-bottom: 0;
+}
+
+/* 內文行距縮小 */
+.lesson-content {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 16px;
+  white-space: pre-line;
+}
+
+/* 重點整理不要離內文太遠 */
+.key-box {
+  margin-top: 18px;
+  padding: 18px 22px;
+}
+
+/* 重點整理標題與清單縮小距離 */
+.key-box h3 {
+  margin: 0 0 8px;
+}
+
+.key-box ul {
+  margin: 0;
+  padding-left: 22px;
+  line-height: 1.7;
+}
+
+/* 上一節 / 下一節按鈕置中，距離不要太大 */
+.lesson-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.lesson-page-indicator {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.secondary-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

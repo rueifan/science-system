@@ -50,6 +50,26 @@ function bindPageEvents() {
     });
   });
 
+  const lessonNextButton = document.querySelector("[data-lesson-next]");
+  if (lessonNextButton) {
+    lessonNextButton.addEventListener("click", () => {
+      if (state.lessonIndex < textLessons.length - 1) {
+        state.lessonIndex++;
+        render();
+      }
+    });
+  }
+
+  const lessonPrevButton = document.querySelector("[data-lesson-prev]");
+  if (lessonPrevButton) {
+    lessonPrevButton.addEventListener("click", () => {
+      if (state.lessonIndex > 0) {
+        state.lessonIndex--;
+        render();
+      }
+    });
+  }
+
   document.querySelectorAll("[data-option]").forEach(button => {
     button.addEventListener("click", () => {
       state.selectedQuizOption = Number(button.dataset.option);
@@ -116,6 +136,7 @@ function bindPageEvents() {
         alert("請完成所有問卷題目");
         return;
       }
+
       go("complete");
     });
   }
@@ -142,6 +163,7 @@ function bindPageEvents() {
       state.currentPage = "login";
       state.selectedQuizOption = null;
       state.quizIndex = 0;
+      state.lessonIndex = 0;
       state.pretestAnswers = {};
       state.posttestAnswers = {};
       state.surveyAnswers = {};

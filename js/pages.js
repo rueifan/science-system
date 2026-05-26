@@ -307,62 +307,240 @@ function renderReviewSimulatorPage() {
 }
 
 function renderTextLearningPage(title, nextPage) {
+  if (state.lessonIndex === undefined) {
+  state.lessonIndex = 0;
+}
+
+const lesson = textLessons[state.lessonIndex];
+
+if (!lesson) {
+  state.lessonIndex = 0;
+  return renderTextLearningPage(title, nextPage);
+}
+  const isFirstLesson = state.lessonIndex === 0;
+  const isLastLesson = state.lessonIndex === textLessons.length - 1;
+
+  let lessonContentHtml = "";
+
+  if (lesson.sections) {
+    lessonContentHtml = lesson.sections.map(section => {
+      const imageHtml = section.image
+        ? renderImage(section.image, section.subtitle)
+        : "";
+
+      const pointsHtml = section.points.map(point => {
+        return `<li>${point}</li>`;
+      }).join("");
+
+      return `
+        <section class="lesson-subsection">
+          <h3>${section.subtitle}</h3>
+
+          <p class="lesson-content">${section.content.trim()}</p>
+
+          ${imageHtml}
+
+          <div class="key-box">
+            <h3>重點整理</h3>
+            <ul>
+              ${pointsHtml}
+            </ul>
+          </div>
+        </section>
+      `;
+    }).join("");
+  } else {
+    const imageHtml = lesson.image
+      ? renderImage(lesson.image, lesson.title)
+      : "";
+
+    const pointsHtml = lesson.points.map(point => {
+      return `<li>${point}</li>`;
+    }).join("");
+
+    lessonContentHtml = `
+      <section class="lesson-section single-lesson-section">
+        <p class="lesson-content">${lesson.content.trim()}</p>
+
+        ${imageHtml}
+
+        <div class="key-box">
+          <h3>重點整理</h3>
+          <ul>
+            ${pointsHtml}
+          </ul>
+        </div>
+      </section>
+    `;
+  }
+
   return `
-    <div class="text-learning-card">
-      <h2 class="page-title">${title}</h2>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
+    <div class="text-learning-card text-learning-paged">
+      <div class="lesson-page-header">
+        <div>
+          <h2 class="page-title">${title}</h2>
+          <p class="lesson-page-count">
+            第 ${state.lessonIndex + 1} / ${textLessons.length} 節
+          </p>
+        </div>
+
+        <div class="lesson-mini-progress">
+          <div 
+            class="lesson-mini-progress-fill" 
+            style="width: ${((state.lessonIndex + 1) / textLessons.length) * 100}%;">
+          </div>
+        </div>
       </div>
 
-      <h3>生殖的意義</h3>
-      <p class="page-desc">
-        生殖是生物產生下一代的過程，可以使物種延續。生殖方式大致可分為無性生殖與有性生殖。
-        無性生殖通常只需要一個親代，而有性生殖通常需要雌雄配子結合，能增加後代的遺傳變異。
-      </p>
+      <h3 class="lesson-main-title">${lesson.title}</h3>
 
-      <div class="key-box">
-        <h3>重點整理</h3>
-        <ul>
-          <li>無性生殖通常只需要一個親代。</li>
-          <li>有性生殖需要配子結合。</li>
-          <li>有性生殖能增加後代遺傳變異。</li>
-        </ul>
-      </div>
+      ${lessonContentHtml}
 
-      <div class="actions">
-        <button class="secondary-btn" disabled>上一頁</button>
-        <button class="primary-btn" data-go="${nextPage}">完成學習</button>
+      <div class="lesson-actions">
+        <button 
+          class="secondary-btn" 
+          data-lesson-prev
+          ${isFirstLesson ? "disabled" : ""}>
+          上一節
+        </button>
+
+        <span class="lesson-page-indicator">
+          ${state.lessonIndex + 1} / ${textLessons.length}
+        </span>
+
+        ${
+          isLastLesson
+            ? `<button class="primary-btn" data-go="${nextPage}">完成學習</button>`
+            : `<button class="primary-btn" data-lesson-next>下一節</button>`
+        }
       </div>
     </div>
   `;
 }
 
 function renderReviewTextPage() {
-  return `
-    <div class="learning-grid review-page">
-      <div class="learning-title-row compact-title">
-        <h2>文字教學</h2>
-        <div class="review-switch">
-          <button class="secondary-btn" data-go="reviewSimulator">互動式模擬器</button>
-          <button class="primary-btn" data-go="complete">回到完成頁</button>
-        </div>
-      </div>
+  if (state.lessonIndex === undefined) {
+    state.lessonIndex = 0;
+  }
 
-      <div class="text-learning-card compact-text-card">
-        <h2 class="page-title">生殖的意義</h2>
+  const lesson = textLessons[state.lessonIndex];
 
-        <p class="page-desc">
-          生殖是生物產生下一代的過程，可分為無性生殖與有性生殖。
-          有性生殖需要配子結合，能增加後代的遺傳變異。
-        </p>
+  if (!lesson) {
+    state.lessonIndex = 0;
+    return renderReviewTextPage();
+  }
+
+  const isFirstLesson = state.lessonIndex === 0;
+  const isLastLesson = state.lessonIndex === textLessons.length - 1;
+
+  let lessonContentHtml = "";
+
+  if (lesson.sections) {
+    lessonContentHtml = lesson.sections.map(section => {
+      const imageHtml = section.image
+        ? renderImage(section.image, section.subtitle)
+        : "";
+
+      const pointsHtml = section.points.map(point => {
+        return `<li>${point}</li>`;
+      }).join("");
+
+      return `
+        <section class="lesson-subsection">
+          <h3>${section.subtitle}</h3>
+
+          <p class="lesson-content">${section.content.trim()}</p>
+
+          ${imageHtml}
+
+          <div class="key-box">
+            <h3>重點整理</h3>
+            <ul>
+              ${pointsHtml}
+            </ul>
+          </div>
+        </section>
+      `;
+    }).join("");
+  } else {
+    const imageHtml = lesson.image
+      ? renderImage(lesson.image, lesson.title)
+      : "";
+
+    const pointsHtml = lesson.points.map(point => {
+      return `<li>${point}</li>`;
+    }).join("");
+
+    lessonContentHtml = `
+      <section class="lesson-section single-lesson-section">
+        <p class="lesson-content">${lesson.content.trim()}</p>
+
+        ${imageHtml}
 
         <div class="key-box">
           <h3>重點整理</h3>
           <ul>
-            <li>無性生殖通常只需要一個親代。</li>
-            <li>有性生殖需要雌雄配子結合。</li>
-            <li>授粉與受精是植物有性生殖的重要過程。</li>
+            ${pointsHtml}
           </ul>
+        </div>
+      </section>
+    `;
+  }
+
+  return `
+    <div class="learning-grid review-page">
+      <div class="learning-title-row compact-title">
+        <h2>文字教學</h2>
+
+        <div class="review-switch">
+          <button class="secondary-btn" data-go="reviewSimulator">
+            互動式模擬器
+          </button>
+
+          <button class="primary-btn" data-go="complete">
+            回到完成頁
+          </button>
+        </div>
+      </div>
+
+      <div class="text-learning-card text-learning-paged">
+        <div class="lesson-page-header">
+          <div>
+            <h2 class="page-title">文字教學回看</h2>
+            <p class="lesson-page-count">
+              第 ${state.lessonIndex + 1} / ${textLessons.length} 節
+            </p>
+          </div>
+
+          <div class="lesson-mini-progress">
+            <div 
+              class="lesson-mini-progress-fill" 
+              style="width: ${((state.lessonIndex + 1) / textLessons.length) * 100}%;">
+            </div>
+          </div>
+        </div>
+
+        <h3 class="lesson-main-title">${lesson.title}</h3>
+
+        ${lessonContentHtml}
+
+        <div class="lesson-actions">
+          <button 
+            class="secondary-btn" 
+            data-lesson-prev
+            ${isFirstLesson ? "disabled" : ""}>
+            上一節
+          </button>
+
+          <span class="lesson-page-indicator">
+            ${state.lessonIndex + 1} / ${textLessons.length}
+          </span>
+
+          ${
+            isLastLesson
+              ? `<button class="primary-btn" data-go="complete">回到完成頁</button>`
+              : `<button class="primary-btn" data-lesson-next>下一節</button>`
+          }
         </div>
       </div>
     </div>
@@ -370,40 +548,116 @@ function renderReviewTextPage() {
 }
 
 function renderAnalysisPage() {
-  const pretestScore = getQuizScore(pretestQuestions, state.pretestAnswers);
-  const posttestScore = getQuizScore(posttestQuestions, state.posttestAnswers);
+  const questions = posttestQuestions;
+  const answers = state.posttestAnswers;
+
+  let correctCount = 0;
+
+  const wrongQuestions = questions
+    .map((question, index) => {
+      const userAnswerIndex = answers[index];
+      const isCorrect = userAnswerIndex === question.answerIndex;
+
+      if (isCorrect) {
+        correctCount++;
+        return null;
+      }
+
+      return {
+        index,
+        question,
+        userAnswerIndex,
+        correctAnswerIndex: question.answerIndex,
+      };
+    })
+    .filter(item => item !== null);
+
+  const score = Math.round((correctCount / questions.length) * 100);
+
+  const wrongHtml = wrongQuestions.length === 0
+    ? `
+      <div class="key-box">
+        <h3>答題結果</h3>
+        <p>恭喜你，本次後測沒有答錯題目！</p>
+      </div>
+    `
+    : wrongQuestions.map(item => {
+        const question = item.question;
+        const userAnswerText = getOptionText(question.options[item.userAnswerIndex]);
+        const correctAnswerText = getOptionText(question.options[item.correctAnswerIndex]);
+
+        return `
+          <div class="wrong-question-card">
+            <div class="wrong-question-title">
+              第 ${item.index + 1} 題
+            </div>
+
+            <div class="wrong-question-content">
+              ${question.question}
+            </div>
+
+            <div class="answer-row wrong-answer">
+              你的答案：${userAnswerText || "未作答"}
+            </div>
+
+            <div class="answer-row correct-answer">
+              正確答案：${correctAnswerText}
+            </div>
+
+            <div class="explanation-box">
+              <strong>詳解：</strong>
+              ${question.explanation || "目前尚未提供詳解。"}
+            </div>
+          </div>
+        `;
+      }).join("");
 
   return `
     <div class="center">
-      <div class="card">
+      <div class="card analysis-card">
         <h2 class="page-title">學習分析報告</h2>
-        <p class="page-desc">此頁目前先顯示前後測答題結果，之後可再加入更完整的錯題詳解。</p>
+
+        <p class="page-desc">
+          以下為你的後測答題結果與錯題詳解，請先閱讀後再進入交換體驗。
+        </p>
 
         <div class="stat-grid">
           <div class="stat-card">
-            <span>前測分數</span>
-            <strong>${pretestScore} / ${pretestQuestions.length}</strong>
+            <span>後測答對題數</span>
+            <strong>${correctCount} / ${questions.length}</strong>
           </div>
+
           <div class="stat-card">
             <span>後測分數</span>
-            <strong>${posttestScore} / ${posttestQuestions.length}</strong>
+            <strong>${score}</strong>
           </div>
         </div>
 
-        <div class="key-box">
-          <h3>錯題詳解預留區</h3>
-          <p>
-            之後可以在這裡顯示學生答錯的題目、正確答案與詳解內容。
-          </p>
+        <div class="analysis-list">
+          ${wrongHtml}
         </div>
 
         <div class="actions">
           <span></span>
-          <button class="primary-btn" data-go="exchangeIntro">進入交換體驗</button>
+          <button class="primary-btn" data-go="exchangeIntro">
+            進入交換體驗
+          </button>
         </div>
       </div>
     </div>
   `;
+}
+
+function getOptionText(option) {
+  if (!option) {
+    return "";
+  }
+
+  if (typeof option === "string") {
+    return option;
+  }
+
+  return option.text || "";
 }
 
 function renderSurveyPage() {
