@@ -21,6 +21,7 @@ const state = {
   posttestAnswers: {},
   surveyAnswers: {},
   showStudentModal: false,
+  showPretestResultModal: false,
 };
 
 function getGroupByStudentCode(code) {

@@ -14,6 +14,7 @@ function render() {
         </button>
 
         ${state.showStudentModal ? renderStudentModal() : ""}
+        ${state.showPretestResultModal ? renderPretestResultModal() : ""}
       </section>
     </div>
   `;
@@ -83,6 +84,14 @@ function bindPageEvents() {
     });
   });
 
+  const closePretestResultButton = document.querySelector("[data-close-pretest-result]");
+  if (closePretestResultButton) {
+    closePretestResultButton.addEventListener("click", () => {
+      state.showPretestResultModal = false;
+      go("stage1Intro");
+    });
+  }
+
   document.querySelectorAll("[data-quiz-next]").forEach(button => {
     button.addEventListener("click", () => {
       const testType = button.dataset.testType;
@@ -97,6 +106,12 @@ function bindPageEvents() {
       if (state.quizIndex < questions.length - 1) {
         state.quizIndex++;
         state.selectedQuizOption = answers[state.quizIndex] ?? null;
+        render();
+        return;
+      }
+
+      if (testType === "pretest") {
+        state.showPretestResultModal = true;
         render();
         return;
       }
@@ -168,6 +183,7 @@ function bindPageEvents() {
       state.posttestAnswers = {};
       state.surveyAnswers = {};
       state.showStudentModal = false;
+      state.showPretestResultModal = false;
       render();
     });
   }
@@ -184,6 +200,7 @@ function bindPageEvents() {
   if (closeStudentModalButton) {
     closeStudentModalButton.addEventListener("click", () => {
       state.showStudentModal = false;
+      state.showPretestResultModal = false;
       render();
     });
   }
@@ -192,8 +209,9 @@ function bindPageEvents() {
   if (modalBackdrop) {
     modalBackdrop.addEventListener("click", event => {
       if (event.target === modalBackdrop) {
-        state.showStudentModal = false;
-        render();
+      state.showStudentModal = false;
+      state.showPretestResultModal = false;
+      render();
       }
     });
   }
