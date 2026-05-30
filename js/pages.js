@@ -38,7 +38,7 @@ function renderLogin() {
     <section class="login-page">
       <div class="login-card">
         <div class="logo-icon">🌱</div>
-        <h1 class="system-title">生命探索模擬學習系統</h1>
+        <h1 class="system-title">生殖模擬學習系統</h1>
         <p class="system-unit">以生殖單元為例</p>
 
         <div class="form-title">請輸入個人資訊</div>
